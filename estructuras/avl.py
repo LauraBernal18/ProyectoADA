@@ -92,3 +92,49 @@ class AVL:
         self._actualizar_altura(y)
 
         return y
+    
+    
+    
+    def insertar(self, tarea):
+        """
+        Inserta una tarea en el árbol AVL.
+        """
+        self.raiz = self._insertar(self.raiz, tarea)
+        
+    
+    def _insertar(self, nodo, tarea):
+        if nodo is None:
+            return NodoAVL(tarea)
+        
+        if tarea.id < nodo.tarea.id:
+            nodo.izquierda = self._insertar(nodo.izquierda, tarea)
+            
+        elif tarea.id > nodo.tarea.id:
+            nodo.derecha = self._insertar(nodo.derecha, tarea)
+            
+        else:
+            return nodo
+    
+        self._actualizar_altura(nodo)
+        
+        balance = self._factor_balance(nodo)
+        
+        # Caso Izquierda-Izquierda
+        if balance > 1 and tarea.id < nodo.izquierda.tarea.id:
+            return self._rotacion_derecha(nodo)
+
+        # Caso Derecha-Derecha
+        if balance < -1 and tarea.id > nodo.derecha.tarea.id:
+            return self._rotacion_izquierda(nodo)
+    
+        # Caso Izquierda-Derecha
+        if balance > 1 and tarea.id > nodo.izquierda.tarea.id:
+            nodo.izquierda = self._rotacion_izquierda(nodo.izquierda)
+            return self._rotacion_derecha(nodo)
+        
+        # Caso Derecha-Izquierda
+        if balance < -1 and tarea.id < nodo.derecha.tarea.id:
+            nodo.derecha = self._rotacion_derecha(nodo.derecha)
+            return self._rotacion_izquierda(nodo)
+        
+        return nodo
