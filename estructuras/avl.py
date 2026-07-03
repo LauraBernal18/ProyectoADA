@@ -103,6 +103,10 @@ class AVL:
         
     
     def _insertar(self, nodo, tarea):
+        """
+        Inserta una tarea en el árbol AVL y rebalancea el árbol
+        si es necesario.
+        """
         if nodo is None:
             return NodoAVL(tarea)
         
@@ -138,3 +142,21 @@ class AVL:
             return self._rotacion_izquierda(nodo)
         
         return nodo
+    
+    
+    def inorden(self):
+        """
+        Muestra las tareas del árbol en recorrido inorden.
+        """
+        self._inorden(self.raiz)
+        
+        
+    def _inorden(self, nodo):
+        """
+        Recorre el árbol en inorden.
+        """
+
+        if nodo is not None:
+            self._inorden(nodo.izquierda)
+            print(nodo.tarea)
+            self._inorden(nodo.derecha)
