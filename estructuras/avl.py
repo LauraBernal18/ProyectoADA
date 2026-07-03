@@ -326,6 +326,14 @@ class AVL:
             return self._rotacion_izquierda(nodo)
         
         return nodo
+    
+    def esta_vacio(self) -> bool:
+        """
+        Verifica si el árbol AVL está vacío.
+
+        Retorna True si está vacío y False en caso contrario.
+        """
+        return self.raiz is None
         
         
     
