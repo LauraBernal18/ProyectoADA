@@ -48,7 +48,19 @@ def main():
 
     print("Recorrido InOrden después de eliminar:")
     arbol.inorden()
-            
+    
+    
+    print("\nLista de tareas obtenida desde el AVL:")
+
+    for tarea in arbol.obtener_tareas():
+        print(tarea)
+        
+    print("\nRecorrido PreOrden:")
+    arbol.preorden()
+
+    print("\nRecorrido PostOrden:")
+    arbol.postorden()
+                
     
 
 

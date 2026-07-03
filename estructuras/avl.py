@@ -1,9 +1,11 @@
+from models.tarea import Tarea
+
 class NodoAVL:
     """
     Representa un nodo del árbol AVL.
     """
 
-    def __init__(self, tarea):
+    def __init__(self, tarea: Tarea):
         self.tarea = tarea
         self.izquierda = None
         self.derecha = None
@@ -95,14 +97,14 @@ class AVL:
     
     
     
-    def insertar(self, tarea):
+    def insertar(self, tarea: Tarea):
         """
         Inserta una tarea en el árbol AVL.
         """
         self.raiz = self._insertar(self.raiz, tarea)
         
     
-    def _insertar(self, nodo, tarea):
+    def _insertar(self, nodo, tarea: Tarea):
         """
         Inserta una tarea en el árbol AVL y rebalancea el árbol
         si es necesario.
@@ -148,22 +150,70 @@ class AVL:
         """
         Muestra las tareas del árbol en recorrido inorden.
         """
-        self._inorden(self.raiz)
+        for tarea in self.obtener_tareas():
+            print(tarea)
         
         
-    def _inorden(self, nodo):
+    # Recorrido preorden        
+    def preorden(self):
         """
-        Recorre el árbol en inorden.
+        Muestra las tareas del árbol en recorrido preorden.
+        """
+        self._preorden(self.raiz)
+    
+    def _preorden(self, nodo):
+        """
+        Recorre el árbol en preorden.
         """
 
         if nodo is not None:
-            self._inorden(nodo.izquierda)
             print(nodo.tarea)
-            self._inorden(nodo.derecha)
+            self._preorden(nodo.izquierda)
+            self._preorden(nodo.derecha)
+    
+    
+    
+    # Recorrido postorden
+    def postorden(self):
+        """
+        Muestra las tareas del árbol en recorrido postorden.
+        """
+        self._postorden(self.raiz)
+        
+    def _postorden(self, nodo):
+        """
+        Recorre el árbol en postorden.
+        """
+
+        if nodo is not None:
+            self._postorden(nodo.izquierda)
+            self._postorden(nodo.derecha)
+            print(nodo.tarea)
+    
+    
+    
+    def obtener_tareas(self):
+        """
+        Retorna una lista de todas las tareas ordenadas por ID.
+        """
+        tareas = []
+        self._obtener_tareas(self.raiz, tareas)
+        return tareas
+    
+    
+    def _obtener_tareas(self, nodo, tareas):
+        """
+        Recorre el árbol en inorden y almacena las tareas en una lista.
+        """
+
+        if nodo is not None:
+            self._obtener_tareas(nodo.izquierda, tareas)
+            tareas.append(nodo.tarea)
+            self._obtener_tareas(nodo.derecha, tareas)
             
             
             
-    def buscar(self, id):
+    def buscar(self, id: int):
         """
         Busca una tarea por su identificador.
 
@@ -172,7 +222,7 @@ class AVL:
         return self._buscar(self.raiz, id)
 
 
-    def _buscar(self, nodo, id):
+    def _buscar(self, nodo, id: int):
         """
         Busca recursivamente una tarea en el árbol.
         """
@@ -187,9 +237,20 @@ class AVL:
             return self._buscar(nodo.izquierda, id)
 
         return self._buscar(nodo.derecha, id)
+    
+    
+    
+    def existe(self, id: int) -> bool:
+        """
+        Verifica si una tarea existe en el árbol.
+
+        Retorna True si existe y False en caso contrario.
+        """
+        return self.buscar(id) is not None
 
 
-    def eliminar(self, id):
+
+    def eliminar(self, id: int):
         """
         Elimina una tarea del árbol AVL según su identificador.
         """
@@ -208,7 +269,7 @@ class AVL:
 
         return actual
 
-    def _eliminar(self, nodo, id):
+    def _eliminar(self, nodo, id: int):
         """
         Elimina una tarea del árbol AVL de forma recursiva.
         """
