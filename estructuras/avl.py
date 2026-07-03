@@ -160,3 +160,111 @@ class AVL:
             self._inorden(nodo.izquierda)
             print(nodo.tarea)
             self._inorden(nodo.derecha)
+            
+            
+            
+    def buscar(self, id):
+        """
+        Busca una tarea por su identificador.
+
+        Retorna el objeto Tarea si lo encuentra o None si no existe.
+        """
+        return self._buscar(self.raiz, id)
+
+
+    def _buscar(self, nodo, id):
+        """
+        Busca recursivamente una tarea en el árbol.
+        """
+
+        if nodo is None:
+            return None
+
+        if id == nodo.tarea.id:
+            return nodo.tarea
+
+        if id < nodo.tarea.id:
+            return self._buscar(nodo.izquierda, id)
+
+        return self._buscar(nodo.derecha, id)
+
+
+    def eliminar(self, id):
+        """
+        Elimina una tarea del árbol AVL según su identificador.
+        """
+        self.raiz = self._eliminar(self.raiz, id)
+        
+    def _minimo(self, nodo):
+        """
+        Retorna el nodo con el menor identificador
+        dentro de un subárbol.
+        """
+
+        actual = nodo
+
+        while actual.izquierda is not None:
+            actual = actual.izquierda
+
+        return actual
+
+    def _eliminar(self, nodo, id):
+        """
+        Elimina una tarea del árbol AVL de forma recursiva.
+        """
+        
+        if id < nodo.tarea.id:
+            nodo.izquierda = self._eliminar(nodo.izquierda, id)
+
+        elif id > nodo.tarea.id:
+            nodo.derecha = self._eliminar(nodo.derecha, id)
+            
+        else:
+            
+            # Caso 1: no tiene hijo izquierdo
+            if nodo.izquierda is None:
+                return nodo.derecha
+            
+            # Caso 2: no tiene hijo derecho
+            elif nodo.derecha is None:
+                return nodo.izquierda
+            
+            # Caso 3: tiene dos hijos
+            temporal = self._minimo(nodo.derecha)
+
+            nodo.tarea = temporal.tarea
+
+            nodo.derecha = self._eliminar(
+                nodo.derecha,
+                temporal.tarea.id
+            )   
+        
+        if nodo is None:
+            return nodo
+             
+        self._actualizar_altura(nodo)
+        
+        balance = self._factor_balance(nodo)
+        
+        #Caso Izquierda-Izquierda
+        if balance > 1 and self._factor_balance(nodo.izquierda) >= 0:
+            return self._rotacion_derecha(nodo)
+        
+        #Caso Derecha-Derecha
+        if balance < -1 and self._factor_balance(nodo.derecha) <= 0:
+            return self._rotacion_izquierda(nodo)
+        
+        #Caso Izquierda-Derecha
+        if balance > 1 and self._factor_balance(nodo.izquierda) < 0:
+            nodo.izquierda = self._rotacion_izquierda(nodo.izquierda)
+            return self._rotacion_derecha(nodo)
+        
+        #Caso Derecha-Izquierda
+        if balance < -1 and self._factor_balance(nodo.derecha) > 0:
+            nodo.derecha = self._rotacion_derecha(nodo.derecha)
+            return self._rotacion_izquierda(nodo)
+        
+        return nodo
+        
+        
+    
