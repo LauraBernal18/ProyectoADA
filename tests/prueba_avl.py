@@ -6,10 +6,13 @@ def main():
     arbol = AVL()
 
     tareas = [
-        Tarea(30, "Tarea 30", 2, "2026-07-10"),
-        Tarea(20, "Tarea 20", 3, "2026-07-11"),
-        Tarea(10, "Tarea 10", 1, "2026-07-12"),
-    ]
+    Tarea(30, "Tarea 30", 2, "2026-07-10"),
+    Tarea(20, "Tarea 20", 3, "2026-07-11"),
+    Tarea(10, "Tarea 10", 1, "2026-07-12"),
+    Tarea(40, "Tarea 40", 2, "2026-07-13"),
+    Tarea(50, "Tarea 50", 3, "2026-07-14"),
+    Tarea(25, "Tarea 25", 1, "2026-07-15"),
+]
 
     for tarea in tareas:
         arbol.insertar(tarea)
