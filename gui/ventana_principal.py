@@ -299,11 +299,19 @@ class VentanaPrincipal:
             pady=15
         )
 
-        self.boton_agregar = ttk.Button(
+        self.boton_agregar = tk.Button(
             frame_botones,
-            text="➕ Agregar",
+            text="Agregar",
             width=18,
-            command=self.agregar_tarea
+            command=self.agregar_tarea,
+            bg="#2E8B57",
+            fg="white",
+            activebackground="#25724A",
+            activeforeground="white",
+            relief="flat",
+            bd=0,
+            cursor="hand2",
+            font=("Segoe UI", 10, "bold")
         )
 
         self.boton_agregar.pack(
@@ -311,11 +319,19 @@ class VentanaPrincipal:
             padx=5
         )
 
-        self.boton_buscar = ttk.Button(
+        self.boton_buscar = tk.Button(
             frame_botones,
-            text="🔍 Buscar",
+            text="Buscar",
             width=18,
-            command=self.buscar_tarea
+            command=self.buscar_tarea,
+            bg="#1976D2",
+            fg="white",
+            activebackground="#25724A",
+            activeforeground="white",
+            relief="flat",
+            bd=0,
+            cursor="hand2",
+            font=("Segoe UI", 10, "bold")
         )
 
         self.boton_buscar.pack(
@@ -323,11 +339,19 @@ class VentanaPrincipal:
             padx=5
         )
 
-        self.boton_eliminar = ttk.Button(
+        self.boton_eliminar = tk.Button(
             frame_botones,
-            text="🗑 Eliminar",
+            text="Eliminar",
             width=18,       
-            command=self.eliminar_tarea
+            command=self.eliminar_tarea,
+            bg="#C62828",
+            fg="white",
+            activebackground="#25724A",
+            activeforeground="white",
+            relief="flat",
+            bd=0,
+            cursor="hand2",
+            font=("Segoe UI", 10, "bold")
         )
 
         self.boton_eliminar.pack(
@@ -335,11 +359,19 @@ class VentanaPrincipal:
             padx=5
         )
 
-        self.boton_completar = ttk.Button(
+        self.boton_completar = tk.Button(
             frame_botones,
-            text="✔ Completar",
+            text="Completar",
             width=18,
-            command=self.completar_tarea
+            command=self.completar_tarea,
+            bg="#FFC107",
+            fg="white",
+            activebackground="#25724A",
+            activeforeground="white",
+            relief="flat",
+            bd=0,
+            cursor="hand2",
+            font=("Segoe UI", 10, "bold")
         )
 
         self.boton_completar.pack(
