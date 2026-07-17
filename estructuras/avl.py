@@ -250,11 +250,16 @@ class AVL:
 
 
 
-    def eliminar(self, id: int):
-        """
-        Elimina una tarea del árbol AVL según su identificador.
-        """
-        self.raiz = self._eliminar(self.raiz, id)
+def _eliminar(self, nodo, id: int):
+    """
+    Elimina una tarea del árbol AVL de forma recursiva.
+    """
+
+    if nodo is None:
+        return None
+
+    if id < nodo.tarea.id:
+        nodo.izquierda = self._eliminar(nodo.izquierda, id)
         
     def _minimo(self, nodo):
         """
