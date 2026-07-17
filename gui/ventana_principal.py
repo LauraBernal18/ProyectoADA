@@ -5,6 +5,7 @@ from datetime import datetime
 
 from controllers.gestor_tareas import GestorTareas
 from models.tarea import Tarea
+from gui.estilos import configurar_tags, tag_por_prioridad
 
 
 class VentanaPrincipal:
@@ -19,7 +20,9 @@ class VentanaPrincipal:
         self._crear_formulario()
         self._crear_botones()
         self._crear_tabla()
+        self.crear_label_prioritario()
         self._crear_barra_estado()
+        self.actualizar_tabla()
 
 
     def _configurar_ventana(self):
@@ -203,7 +206,8 @@ class VentanaPrincipal:
             frame,
             text="Completar",
             width=15,
-            cursor="hand2"
+            cursor="hand2",
+            command = self.completar_tarea_prioritaria
         )
 
         self.boton_completar.grid(
@@ -309,6 +313,23 @@ class VentanaPrincipal:
             "<<TreeviewSelect>>",
             self.seleccionar_tarea
         )
+
+        configurar_tags(self.tabla)
+
+    def crear_label_prioritario (self):
+        """
+        Crear label que muestra la tarea más
+        urgente
+        """
+
+        self.label_prioritaria = tk.Label(
+            self.ventana,
+            text= "Siguiente tarea: (no hay)",
+            font = ("Arial", 11, "bold"),
+            fg = "#333"
+        )
+
+        self.label_prioritaria.pack(pady=5)
 
 
     def _crear_barra_estado(self):
@@ -527,23 +548,52 @@ class VentanaPrincipal:
                 text="Ingrese un ID válido."
             )
         
+    def completar_tarea_prioritaria(self):
+        """
+        Completa la tarea con mayor prioridad.
+        """
+
+        tarea = self.gestor.obtener_tarea_prioritaria()
+
+        if tarea is None:
+            self.estado.config(
+                text="No hay tareas pendientes."
+            )
+            return
+
+        respuesta = messagebox.askyesno(
+            "Confirmar completado",
+            f"¿Desea completar la tarea {tarea.id}?"
+        )
+
+        if not respuesta:
+            return
+
+        self.gestor.eliminar_tarea(tarea.id)
+        self.actualizar_tabla()
+        self.limpiar_formulario()
+        self.estado.config(
+            text="Tarea completada correctamente."
+        )
+
+        messagebox.showinfo(
+            "Éxito",
+            "La tarea fue completada correctamente."
+        )
         
     def actualizar_tabla(self):
         """
-        Actualiza la tabla con las tareas almacenadas.
+        Actualiza la tabla con las tareas almacenadas, pinta las filas
+        según prioridad, y refresca el label de siguiente tarea y el
+        contador de pendientes.
         """
-
         for fila in self.tabla.get_children():
             self.tabla.delete(fila)
 
-        prioridades = {
-            3: "Alta",
-            2: "Media",
-            1: "Baja"
-        }
+        prioridades = {3: "Alta", 2: "Media", 1: "Baja"}
 
         for tarea in self.gestor.obtener_tareas():
-
+            tag = tag_por_prioridad(tarea)
             self.tabla.insert(
                 "",
                 tk.END,
@@ -552,9 +602,20 @@ class VentanaPrincipal:
                     tarea.descripcion,
                     prioridades[tarea.prioridad],
                     tarea.fecha_vencimiento
-                )
+                ),
+                tags=(tag,)
             )
-    
+
+        prioritaria = self.gestor.obtener_tarea_prioritaria()
+        if prioritaria is None:
+            self.label_prioritaria.config(text="Siguiente tarea: (ninguna)")
+        else:
+            self.label_prioritaria.config(
+            text=f"Siguiente tarea: {prioritaria.descripcion} (ID {prioritaria.id})"
+        )
+
+        total = self.gestor.contar_pendientes()
+        self.estado.config(text=f"Tareas pendientes: {total}")
     
     def limpiar_formulario(self):
         """

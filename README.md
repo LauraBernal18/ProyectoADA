@@ -50,20 +50,26 @@ Cada tarea contiene:
 ProyectoADA/
 │
 ├── controllers/
-│
+│   ├── gestor_tareas.py
+│   └── _init_.py
 ├── estructuras/
 │   ├── avl.py
 │   ├── heap.py
 │   └── __init__.py
 │
 ├── gui/
-│
+│   ├── ventana_principal.py
+│   └── estilos.py
+|
 ├── models/
 │   ├── tarea.py
-│   └── __init__.py
+│   └── _init_.py
 │
 ├── tests/
-│
+│   ├── prueba_avl.py
+│   ├── prueba_heap.py
+│   └── prueba_integracion.py
+|
 ├── main.py
 ├── README.md
 └── .gitignore
@@ -82,20 +88,31 @@ ProyectoADA/
 - Balanceo automático
 - Recorridos InOrden, PreOrden y PostOrden
 
+## Heap (Cola de Prioridad)
+- Inserción
+- Extracción de la tarea de mayor prioridad
+- Eliminación de una tarea específica por su ID
+- Índice de posiciones para eliminación eficiente
+
+## Integración AVL + Heap
+- El Gestor de Tareas coordina ambas estructuras
+- Agregar y eliminar una tarea afecta a ambas estructuras simultáneamente
+- Consulta de la tarea más prioritaria sin afectar el AVL
+
+## Interfaz gráfica
+- Formulario para agregar tareas
+- Búsqueda de tareas por ID
+- Eliminación con confirmación
+- Botón "Completar" para extraer la tarea más urgente
+- Tabla con colores según prioridad
+- Label en vivo con la siguiente tarea a atender
+
 ## Modelo de datos
 
 - Clase Tarea
 
 ---
 
-# Funcionalidades en desarrollo
-
-- Heap (Cola de Prioridad)
-- Interfaz Gráfica
-- Integración AVL + Heap
-- Gestor de tareas
-
----
 
 # Instalación
 
@@ -151,12 +168,13 @@ Ejemplo:
 
 ```bash
 python -m tests.prueba_avl
+python -m tests.prueba_heap
+python -m tests.preuba_integracion
 ```
 
 ---
 
 # Estado del proyecto
+Proyecto completo.
 
-Actualmente se encuentra implementado el Árbol AVL y el modelo de datos.
-
-Las siguientes etapas corresponden al desarrollo del Heap, la interfaz gráfica y la integración del sistema.
+Las tres estructuras (AVL, Heap y su integración a través del Gestor de Tareas) están implementadas, junto con la interfaz gráfica completa.
