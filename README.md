@@ -169,7 +169,7 @@ Ejemplo:
 ```bash
 python -m tests.prueba_avl
 python -m tests.prueba_heap
-python -m tests.preuba_integracion
+python -m tests.prueba_integracion
 ```
 
 ---
