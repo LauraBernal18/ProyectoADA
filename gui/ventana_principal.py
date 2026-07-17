@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from datetime import datetime
 
 from controllers.gestor_tareas import GestorTareas
@@ -39,6 +40,18 @@ class VentanaPrincipal:
         )
 
         titulo.pack(pady=15)
+        
+        self.ventana.update_idletasks()
+
+        ancho = 900
+        alto = 600
+
+        x = (self.ventana.winfo_screenwidth() // 2) - (ancho // 2)
+        y = (self.ventana.winfo_screenheight() // 2) - (alto // 2)
+
+        self.ventana.geometry(
+            f"{ancho}x{alto}+{x}+{y}"
+        )
         
         
     def _crear_formulario(self):
@@ -148,6 +161,7 @@ class VentanaPrincipal:
             frame,
             text="Agregar",
             width=15,
+            cursor="hand2",
             command=self.agregar_tarea
         )
 
@@ -161,6 +175,7 @@ class VentanaPrincipal:
             frame,
             text="Buscar",
             width=15,
+            cursor="hand2",
             command=self.buscar_tarea
         )
 
@@ -174,6 +189,7 @@ class VentanaPrincipal:
             frame,
             text="Eliminar",
             width=15,
+            cursor="hand2",
             command=self.eliminar_tarea
         )
 
@@ -186,7 +202,8 @@ class VentanaPrincipal:
         self.boton_completar = tk.Button(
             frame,
             text="Completar",
-            width=15
+            width=15,
+            cursor="hand2"
         )
 
         self.boton_completar.grid(
@@ -207,8 +224,11 @@ class VentanaPrincipal:
             font=("Arial", 14, "bold")
         ).pack(pady=10)
 
+        frame_tabla = tk.Frame(self.ventana)
+        frame_tabla.pack(pady=10)
+
         self.tabla = ttk.Treeview(
-            self.ventana,
+            frame_tabla,
             columns=(
                 "id",
                 "descripcion",
@@ -262,8 +282,27 @@ class VentanaPrincipal:
             anchor="center"
         )
 
+
+        scroll = ttk.Scrollbar(
+            frame_tabla,
+            orient="vertical"
+        )
+
+        self.tabla.configure(
+            yscrollcommand=scroll.set
+        )
+
+        scroll.config(
+            command=self.tabla.yview
+        )
+
         self.tabla.pack(
-            pady=10
+            side="left"
+        )
+
+        scroll.pack(
+            side="right",
+            fill="y"
         )
 
         self.tabla.bind(
@@ -385,7 +424,12 @@ class VentanaPrincipal:
 
         self.estado.config(
             text="Tarea agregada correctamente."
-        )  
+        ) 
+        
+        messagebox.showinfo(
+            "Éxito",
+            "La tarea fue agregada correctamente."
+        )
        
             
     def buscar_tarea(self):
@@ -453,6 +497,14 @@ class VentanaPrincipal:
                     text="La tarea no existe."
                 )
                 return
+            
+            respuesta = messagebox.askyesno(
+                "Confirmar eliminación",
+                f"¿Desea eliminar la tarea {id_tarea}?"
+            )
+
+            if not respuesta:
+                return
 
             self.gestor.eliminar_tarea(id_tarea)
 
@@ -462,6 +514,11 @@ class VentanaPrincipal:
 
             self.estado.config(
                 text="Tarea eliminada correctamente."
+            )
+            
+            messagebox.showinfo(
+                "Éxito",
+                "La tarea fue eliminada correctamente."
             )
 
         except ValueError:
